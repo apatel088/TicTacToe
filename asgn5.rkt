@@ -38,7 +38,10 @@
 (define (game turn)
   (cond ((= (modulo turn 2) 0) ;Player X's turn
          (display "Player X's turn:")
-         (set! board (subst 'X (read) board))
+         (let ((input (read)))
+           (if (not (member? input board)) ;check if invalid move
+               "Invalid move. Please try again" ;display error if invalid move
+               (set! board (subst 'X input board))) 
          (display board)
          (game (+ turn 1)))
         ((= (modulo turn 2) 1) ;Player O's turn
