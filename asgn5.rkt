@@ -6,7 +6,7 @@
   (not (or (pair? x) (null? x))))
 
 ;Tic Tac Toe Board combinations
-(define board '((1 2 3) (4 5 6) (7 8 9)
+(define start '((1 2 3) (4 5 6) (7 8 9)
                 (1 4 7) (2 5 8) (3 6 9)
                 (1 5 9) (3 5 7)
                 ))
@@ -35,7 +35,7 @@
                 (member? e (cdr board)))))))
 
 ;handles each players turn
-(define (game turn)
+(define (game turn board)
   
   ;Player X's turn
   (cond ((= (modulo turn 2) 0) 
@@ -46,11 +46,11 @@
               (display "Invalid move. Please try again\n")
               (game turn)) ;restart at the same turn
              (else ;otherwise update and print board
-              (set! board (subst 'X input board)) 
-              (display board)
+              (display (subst 'X input board)) 
+              ;(display board)
               (display "\n")
-              (if (member? '(x x x) board) "Player X Wins!!"
-                  (game (+ turn 1))))))) ;move to the next turn
+              (if (member? '(x x x) (subst 'X input board)) "Player X Wins!!"
+                  (game (+ turn 1) (subst 'X input board))))))) ;move to the next turn
         
         ;Player O's Turn
         ((= (modulo turn 2) 1)
@@ -61,11 +61,11 @@
               (display "Invalid move. Please try again\n")
               (game turn)) ;restart at the same turn
              (else ;otherwise update and print board
-              (set! board (subst 'O input board)) 
-              (display board)
+              (display (subst 'O input board)) 
+              ;(display board)
               (display "\n")
-              (if (member? '(o o o) board) "Player O Wins!!"
-                  (game (+ turn 1))))))) ;move to the next turn
+              (if (member? '(o o o) (subst 'O input board)) "Player O Wins!!"
+                  (game (+ turn 1) (subst 'O input board))))))) ;move to the next turn
         
         ;if something goes wrong
         (else "error")))
@@ -75,8 +75,8 @@
 
 ;starts the game
 (define (startGame)
-  (display board)
+  (display start)
   (display "\n")
-  (game 0)
+  (game 0 start)
   )
 
