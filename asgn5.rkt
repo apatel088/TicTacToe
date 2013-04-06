@@ -36,21 +36,42 @@
 
 ;handles each players turn
 (define (game turn)
-  (cond ((= (modulo turn 2) 0) ;Player X's turn
+  
+  ;Player X's turn
+  (cond ((= (modulo turn 2) 0) 
          (display "Player X's turn:")
          (let ((input (read)))
-           (if (not (member? input board)) ;check if invalid move
-               "Invalid move. Please try again" ;display error if invalid move
-               (set! board (subst 'X input board))) 
-         (display board)
-         (game (+ turn 1)))
-        ((= (modulo turn 2) 1) ;Player O's turn
+           (cond 
+             ((not (member? input board)) ;check if invalid move
+              (display "Invalid move. Please try again\n")
+              (game turn)) ;restart at the same turn
+             (else ;otherwise update and print board
+              (set! board (subst 'X input board)) 
+              (display board)
+              (display "\n")
+              (if (member? '(x x x) board) "Player X Wins!!"
+                  (game (+ turn 1))))))) ;move to the next turn
+        
+        ;Player O's Turn
+        ((= (modulo turn 2) 1)
          (display "Player O's turn:")
-         (set! board (subst 'O (read) board))
-         (display board)
-         (game (+ turn 1)))
+         (let ((input (read)))
+           (cond 
+             ((not (member? input board)) ;check if invalid move
+              (display "Invalid move. Please try again\n")
+              (game turn)) ;restart at the same turn
+             (else ;otherwise update and print board
+              (set! board (subst 'O input board)) 
+              (display board)
+              (display "\n")
+              (if (member? '(o o o) board) "Player O Wins!!"
+                  (game (+ turn 1))))))) ;move to the next turn
+        
+        ;if something goes wrong
         (else "error")))
          
+
+
 
 ;starts the game
 (define (startGame)
