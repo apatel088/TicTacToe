@@ -3,7 +3,8 @@
 
 ;starts the game
 (define (startGame)
-  (display start)
+  (display "Players must enter the value of the location they wish to place his/her marker upon\n\n")
+  (printBoard start)
   (display "\n")
   (game 0 start)
   )
@@ -43,36 +44,41 @@
 
 ;handles each players turn
 (define (game turn board)
-  
-  ;Player X's turn
-  (cond ((= (modulo turn 2) 0) 
+  (cond
+    
+    ;Tie Game
+    ((= turn 9)
+     (display "Tie Game!"))
+    
+    ;Player X's turn
+    ((= (modulo turn 2) 0) 
          (display "Player X's turn:")
          (let ((input (read)))
            (cond 
-             ((not (member? input board)) ;check if invalid move
-              (display "Invalid move. Please try again\n")
-              (game turn board)) ;restart at the same turn
-             (else ;otherwise update and print board
-              (display (subst 'X input board)) 
+             ((and (member? input board) (number? input)) ;check if valid move
+              (printBoard (subst 'X input board)) 
               ;(display board)
               (display "\n")
               (if (member? '(x x x) (subst 'X input board)) "Player X Wins!!"
-                  (game (+ turn 1) (subst 'X input board))))))) ;move to the next turn
-        
-        ;Player O's Turn
-        ((= (modulo turn 2) 1)
+                  (game (+ turn 1) (subst 'X input board)))) ;move to the next turn
+             (else ;invalid move
+              (display "Invalid move. Please try again\n")
+              (game turn board))))) ;restart at the same turn
+    
+    ;Player O's turn
+    ((= (modulo turn 2) 1)
          (display "Player O's turn:")
          (let ((input (read)))
            (cond 
-             ((not (member? input board)) ;check if invalid move
-              (display "Invalid move. Please try again\n")
-              (game turn board)) ;restart at the same turn
-             (else ;otherwise update and print board
-              (display (subst 'O input board)) 
+             ((and (member? input board) (number? input)) ;check if valid move
+              (printBoard (subst 'O input board)) 
               ;(display board)
               (display "\n")
               (if (member? '(o o o) (subst 'O input board)) "Player O Wins!!"
-                  (game (+ turn 1) (subst 'O input board))))))) ;move to the next turn
+                  (game (+ turn 1) (subst 'O input board)))) ;move to the next turn
+             (else ;invalid move
+              (display "Invalid move. Please try again\n")
+              (game turn board))))) ;restart at the same turn
         
         ;if something goes wrong
         (else "error")))
@@ -97,10 +103,3 @@
   (display " | ")
   (display (caddar (cddr board)))
   (display "\n"))
-  
-  
-  
-
-
-
-
