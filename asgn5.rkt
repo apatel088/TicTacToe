@@ -3,7 +3,8 @@
 
 ;starts the game
 (define (startGame)
-  (display "Players must enter the value of the location they wish to place his/her marker upon\n\n")
+  (display "Players must enter the value of the location they wish to place his/her marker upon\n")
+  (display "type 'exit' to end the game.\n\n")
   (printBoard start)
   (display "\n")
   (game 0 start)
@@ -55,6 +56,8 @@
          (display "Player X's turn:")
          (let ((input (read)))
            (cond 
+             ((equal? input 'exit) ;user wants to exit
+              (display "Game ended"))
              ((and (member? input board) (number? input)) ;check if valid move
               (printBoard (subst 'X input board)) 
               ;(display board)
@@ -69,7 +72,9 @@
     ((= (modulo turn 2) 1)
          (display "Player O's turn:")
          (let ((input (read)))
-           (cond 
+           (cond
+             ((equal? input 'exit) ;user wants to exit
+              (display "Game ended"))
              ((and (member? input board) (number? input)) ;check if valid move
               (printBoard (subst 'O input board)) 
               ;(display board)
@@ -103,3 +108,6 @@
   (display " | ")
   (display (caddar (cddr board)))
   (display "\n"))
+
+;start the game as soon as the program is running
+(startGame)
