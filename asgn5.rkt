@@ -1,6 +1,13 @@
 ;Assignment 5
 ;Tic Tac Toe
 
+;starts the game
+(define (startGame)
+  (display start)
+  (display "\n")
+  (game 0 start)
+  )
+
 ;checks if argument is atomic
 (define (atom? x)
   (not (or (pair? x) (null? x))))
@@ -44,7 +51,7 @@
            (cond 
              ((not (member? input board)) ;check if invalid move
               (display "Invalid move. Please try again\n")
-              (game turn)) ;restart at the same turn
+              (game turn board)) ;restart at the same turn
              (else ;otherwise update and print board
               (display (subst 'X input board)) 
               ;(display board)
@@ -59,7 +66,7 @@
            (cond 
              ((not (member? input board)) ;check if invalid move
               (display "Invalid move. Please try again\n")
-              (game turn)) ;restart at the same turn
+              (game turn board)) ;restart at the same turn
              (else ;otherwise update and print board
               (display (subst 'O input board)) 
               ;(display board)
@@ -69,14 +76,31 @@
         
         ;if something goes wrong
         (else "error")))
-         
+
+;pretty prints the board
+(define (printBoard board)
+  (display (caar board)) 
+  (display " | ")
+  (display (cadar board))
+  (display " | ")
+  (display (caddar board))
+  (display "\n---------\n")
+  (display (caadr board))
+  (display " | ")
+  (display (cadadr board))
+  (display " | ")
+  (display (caddar (cdr board)))
+  (display "\n---------\n")
+  (display (caar (cddr board)))
+  (display " | ")
+  (display (cadar (cddr board)))
+  (display " | ")
+  (display (caddar (cddr board)))
+  (display "\n"))
+  
+  
+  
 
 
 
-;starts the game
-(define (startGame)
-  (display start)
-  (display "\n")
-  (game 0 start)
-  )
 
